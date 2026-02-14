@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Wuisnervi</title>
+    <style>
+        :root {
+            --color-sobre: #ffadad; 
+            --color-papel: #ffffff;
+            --color-fondo: #fce4ec; 
+            --verde-pastel: #a5d6a7;
+            --rojo-pastel: #ef9a9a;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--color-fondo);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #5d4037;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        img {
+            max-width: 180px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Botones */
+        .btn-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .btn-group { display: flex; flex-direction: column; align-items: center; width: 100%; }
+        p.indicador { font-size: 0.85rem; margin-bottom: 8px; font-weight: bold; color: #8d6e63; }
+        
+        button {
+            padding: 12px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-si { background-color: var(--verde-pastel); color: white; }
+        .btn-no { background-color: var(--rojo-pastel); color: white; }
+
+        /* Estilos del Sobre y Carta */
+        .envelope-wrapper { position: relative; cursor: pointer; transition: transform 0.3s; margin-top: 50px; display: inline-block; }
+        .envelope {
+            position: relative; width: 280px; height: 180px;
+            background-color: var(--color-sobre); border-radius: 0 0 10px 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .envelope::before {
+            content: ""; position: absolute; top: 0; z-index: 4;
+            border-top: 90px solid #ff8a8a; border-left: 140px solid transparent; border-right: 140px solid transparent;
+            transform-origin: top; transition: transform 0.5s ease-in-out; left: 0;
+        }
+        .envelope::after {
+            content: ""; position: absolute; z-index: 3; width: 0; height: 0;
+            border-top: 90px solid transparent; border-right: 140px solid #ffc1c1;
+            border-bottom: 90px solid #ffc1c1; border-left: 140px solid #ffb1b1;
+            border-radius: 0 0 10px 10px; left: 0; bottom: 0;
+        }
+        .letter {
+            position: absolute; bottom: 5px; left: 10px; width: 260px; height: 160px;
+            background: var(--color-papel); z-index: 2; padding: 15px; box-sizing: border-box;
+            border-radius: 5px; transition: all 0.5s ease-in-out; text-align: center; overflow-y: auto;
+        }
+        .letter p { font-size: 12px; line-height: 1.5; color: #5d4037; }
+
+        /* Estados de apertura */
+        .envelope-wrapper.open .envelope::before { transform: rotateX(180deg); z-index: 1; }
+        .envelope-wrapper.open .letter { transform: translateY(-130px); z-index: 5; height: 280px; width: 280px; left: 0; }
+
+        .hidden { display: none; }
+        .instruccion { color: #d81b60; font-weight: bold; margin-bottom: 10px; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }
+    </style>
+</head>
+<body>
+
+    <div id="escena1" class="container">
+        <img src="1.gif" alt="Inicio">
+        <h1>¿me puedes dar una oportunidad de tener algo con tigo?</h1>
+        <div style="display: flex; justify-content: center; gap: 15px;">
+            <button class="btn-si" onclick="irAFinal()">Sí</button>
+            <button class="btn-no" onclick="irAIntento2()">No</button>
+        </div>
+    </div>
+
+    <div id="escena2" class="container hidden">
+        <img src="3.gif" alt="Segura?">
+        <h1>¿Estás segura? 🥺<br>Te doy otra oportunidad...</h1>
+        <div class="btn-container">
+            <div class="btn-group">
+                <p class="indicador">Presiona si me quieres</p>
+                <button id="btn-si-reintentar" class="btn-si" onclick="irAFinal()">Sí</button>
+            </div>
+            <div class="btn-group">
+                <p class="indicador">Presiona si no me quieres</p>
+                <button id="btn-no-reintentar" class="btn-no" onclick="crecerSi()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="escena3" class="container hidden">
+        <img src="2.gif" alt="Sabia">
+        <h1>Gracias no te vas a arepentir 🥰💖</h1>
+        <button style="background-color: #ce93d8; color: white;" onclick="irALaCarta()">Seguir</button>
+    </div>
+
+    <div id="escena4" class="container hidden">
+        <div class="instruccion">Para wuisnervi  ✨ (Toca la carta)</div>
+        <div class="envelope-wrapper" onclick="this.classList.toggle('open')">
+            <div class="envelope">
+                <div class="letter">
+                    <p><strong>De: Ales Hernández<br>Para: Wuisnervi Gonzalez </strong></p>
+                    <hr style="border: 0.5px solid #fce4ec; margin: 10px 0;">
+                    <p>
+                        Hola preciosa, disculpa la simpleza de este regalo. Sé que te mereces más, pero por ahora esto es lo mejor que puedo hacer.
+                        Sin embargo, espero que te guste.<br><br> 
+                        Wuisnervi me gustas mucho, desde que te Vi no e dejado de pensar en tan increíble belleza, tal vez no sepa tanto de ti o nada pero si quiero saber, conocerte, pasar todo un día contigo platicando y descubriendo tus metas a seguir y tus miedos para calmarlos y ayudarte a superarlos
+                        No soy un hombre rico ni el más atractivo, pero si sé  que haría hasta lo imposible para que te sientas bien con Migo y los cariños, besos y abrazos te sobrarían.<br><br> El dedicarte tiempo sería lo más importante además de tu salud y bienestar
+                        Solo te pido una oportunidad para demostrarte hasta donde puedo llegar por ti, no necesito que hagas grandes cosas o lo imposible para mí solo bastaría con tu comprensión, amor, cariño y respeto<br><br>
+                        <strong>¡Eres la persona más increíble del mundo! y te amo ❤️</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let escalaSi = 1;
+
+        function irAIntento2() {
+            document.getElementById('escena1').classList.add('hidden');
+            document.getElementById('escena2').classList.remove('hidden');
+        }
+
+        function irAFinal() {
+            document.getElementById('escena1').classList.add('hidden');
+            document.getElementById('escena2').classList.add('hidden');
+            document.getElementById('escena3').classList.remove('hidden');
+        }
+
+        function irALaCarta() {
+            document.getElementById('escena3').classList.add('hidden');
+            document.getElementById('escena4').classList.remove('hidden');
+        }
+
+        function crecerSi() {
+            escalaSi += 0.5;
+            const btnSi = document.getElementById('btn-si-reintentar');
+            btnSi.style.transform = `scale(${escalaSi})`;
+            btnSi.style.zIndex = "100";
+        }
+    </script>
+</body>
+</html>
